@@ -97,5 +97,11 @@ export default {
         }
       });
     },
+
+    initClient({ dispatch }) {
+      dispatch({
+        type: 'user/fetchCurrent',
+      });
+    },
   },
 };

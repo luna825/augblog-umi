@@ -42,20 +42,27 @@ export default {
    */
   routes: [
     {
-      path: '/user',
+      path: '/login',
       component: '../layouts/UserLayout',
-      routes: [{ path: '/user', component: './Welcome' }],
+      routes: [{ path: '/login', component: './Login/Login' }],
     },
     {
       path: '/',
       component: '../layouts/BasicLayout',
       routes: [
-        { path: '/', redirect: '/welcome' },
+        { path: '/', redirect: '/home' },
         // dashboard
+        {
+          path: '/home',
+          name: 'home',
+          icon: 'home',
+          component: './Home/Home',
+        },
         {
           path: '/welcome',
           name: 'welcome',
           icon: 'smile',
+          authority: ['test', 'Administrator'],
           component: './Welcome',
         },
         {
@@ -73,6 +80,7 @@ export default {
    */
   define: {
     APP_TYPE: process.env.APP_TYPE || '',
+    HOST: process.env.HOST || 'http://localhost:5000/api/v1'
   },
   // Theme for antd
   // https://ant.design/docs/react/customize-theme-cn

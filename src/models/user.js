@@ -1,4 +1,5 @@
-import { query as queryUsers, queryCurrent } from '@/services/user';
+import { fetchCurrentUser } from '@/services/auth';
+import { reloadAuthorized } from '@/utils/Authorized';
 
 export default {
   namespace: 'user',
@@ -9,43 +10,34 @@ export default {
   },
 
   effects: {
-    *fetch(_, { call, put }) {
-      const response = yield call(queryUsers);
-      yield put({
-        type: 'save',
-        payload: response,
-      });
-    },
-    *fetchCurrent(_, { call, put }) {
-      const response = yield call(queryCurrent);
-      yield put({
-        type: 'saveCurrentUser',
-        payload: response,
-      });
+    *fetchCurrent({ payload }, { call, put }) {
+      if (!localStorage.getItem('aug-blog-user-token')) {
+        yield put({
+          type: 'savaCurrentUser',
+        });
+        return;
+      }
+      try {
+        const { data } = yield call(fetchCurrentUser, payload);
+        reloadAuthorized(data.role.name);
+        yield put({
+          type: 'saveCurrentUser',
+          payload: data,
+        });
+      } catch (e) {
+        localStorage.removeItem('aug-blog-user-token');
+        yield put({
+          type: 'savaCurrentUser',
+        });
+      }
     },
   },
 
   reducers: {
-    save(state, action) {
-      return {
-        ...state,
-        list: action.payload,
-      };
-    },
     saveCurrentUser(state, action) {
       return {
         ...state,
         currentUser: action.payload || {},
-      };
-    },
-    changeNotifyCount(state, action) {
-      return {
-        ...state,
-        currentUser: {
-          ...state.currentUser,
-          notifyCount: action.payload.totalCount,
-          unreadCount: action.payload.unreadCount,
-        },
       };
     },
   },
