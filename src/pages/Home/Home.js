@@ -21,7 +21,9 @@ class Home extends PureComponent {
         <Content>
           <PostList posts={posts.posts} loading={loading} />
         </Content>
-        <Sider className={styles.sider}>sider</Sider>
+        <Sider className={styles.sider} breakpoint="lg" collapsedWidth={0} trigger={null}>
+          sider
+        </Sider>
       </Layout>
     );
   }

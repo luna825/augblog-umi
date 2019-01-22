@@ -2,6 +2,7 @@ import React, { memo } from 'react';
 import Link from 'umi/link';
 import { Card, List } from 'antd';
 import PostListContent from '@/components/PostListContent/PostListContent';
+import styles from './postList.less';
 
 const { Item } = List;
 
@@ -15,7 +16,7 @@ export default memo(({ posts, loading }) => (
         loading={posts.length === 0 ? loading : false}
         dataSource={posts}
         renderItem={item => (
-          <Item key={item.id}>
+          <Item key={item.id} extra={<div className={styles.listItemExtra} />}>
             <Item.Meta title={<Link to={`/post/${item.id}`}>{item.title}</Link>} />
             <PostListContent data={item} />
           </Item>
