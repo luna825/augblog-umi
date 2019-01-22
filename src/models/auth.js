@@ -48,6 +48,17 @@ export default {
         });
       }
     },
+
+    *logout(_, { put }) {
+      yield put({
+        type: 'changeLoginStatus',
+        isLogin: false,
+      });
+      yield put({
+        type: 'user/saveCurrentUser',
+      });
+      localStorage.removeItem('aug-blog-user-token');
+    },
   },
 
   reducers: {
