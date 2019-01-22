@@ -1,15 +1,25 @@
 import React, { PureComponent } from 'react';
+import { connect } from 'dva';
+import PostList from './PostList';
 
 class Home extends PureComponent {
-  componentDidMount() {}
+  componentDidMount() {
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'posts/fetch',
+    });
+  }
 
   render() {
+    const { posts } = this.props;
     return (
       <>
-        <h1>Home Page</h1>
+        <PostList posts={posts.posts} />
       </>
     );
   }
 }
 
-export default Home;
+export default connect(({ posts }) => ({
+  posts,
+}))(Home);

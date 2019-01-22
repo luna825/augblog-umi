@@ -1,4 +1,4 @@
-import { Authorized as RenderAuthorized } from 'ant-design-pro';
+import RenderAuthorized from '@/components/Authorized';
 
 // 默认为用户guset
 let Authorized = RenderAuthorized('guest'); // eslint-disable-line

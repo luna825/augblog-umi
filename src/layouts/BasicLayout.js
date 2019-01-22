@@ -89,7 +89,7 @@ class BasicLayout extends React.PureComponent {
   };
 
   getRouterAuthority = (pathname, routeData) => {
-    let routeAuthority = ['noAuthority'];
+    let routeAuthority = false;
     const getAuthority = (key, routes) => {
       routes.map(route => {
         if (route.path === key) {
@@ -178,7 +178,7 @@ class BasicLayout extends React.PureComponent {
             {...this.props}
           />
           <Content className={styles.content} style={contentStyle}>
-            <Authorized authority={routerConfig} noMatch={<p>Exception403</p>}>
+            <Authorized authority={routerConfig} noMatch={<p>test</p>}>
               {children}
             </Authorized>
           </Content>

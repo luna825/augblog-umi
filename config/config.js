@@ -70,6 +70,9 @@ export default {
           name: 'more-blocks',
           icon: 'block',
         },
+        {
+          component: '404',
+        },
       ],
     },
   ],
