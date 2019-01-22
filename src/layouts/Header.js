@@ -26,6 +26,28 @@ class HeaderView extends PureComponent {
 
   componentDidMount() {
     document.addEventListener('scroll', this.handScroll, { passive: true });
+    const {
+      dispatch,
+      route: { routes, authority },
+    } = this.props;
+    dispatch({
+      type: 'menu/getMenuData',
+      payload: { routes, authority },
+    });
+  }
+
+  componentDidUpdate(preprops) {
+    const {
+      currentUser,
+      dispatch,
+      route: { routes, authority },
+    } = this.props;
+    if (preprops.currentUser.nickname !== currentUser.nickname) {
+      dispatch({
+        type: 'menu/getMenuData',
+        payload: { routes, authority },
+      });
+    }
   }
 
   componentWillUnmount() {

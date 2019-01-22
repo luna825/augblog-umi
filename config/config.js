@@ -66,9 +66,11 @@ export default {
           component: './Welcome',
         },
         {
-          path: 'https://github.com/umijs/umi-blocks/tree/master/ant-design-pro',
-          name: 'more-blocks',
-          icon: 'block',
+          path: '/editor',
+          name: 'editor',
+          icon: 'edit',
+          authority: ['Administrator'],
+          component: './Editor/Editor',
         },
         {
           component: '404',

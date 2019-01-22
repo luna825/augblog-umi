@@ -1,21 +1,23 @@
 import React, { memo } from 'react';
 import Link from 'umi/link';
 import { Card, List } from 'antd';
+import PostListContent from '@/components/PostListContent/PostListContent';
 
 const { Item } = List;
 
-export default memo(({ posts }) => (
+export default memo(({ posts, loading }) => (
   <>
-    <Card bordered={false} style={{ marginTop: 24 }} bodyStyle={{ padding: '8px 32px 32px 32px' }}>
+    <Card bordered={false} bodyStyle={{ padding: '8px 32px 32px 32px' }}>
       <List
         size="large"
         rowKey="id"
         itemLayout="vertical"
+        loading={posts.length === 0 ? loading : false}
         dataSource={posts}
         renderItem={item => (
           <Item key={item.id}>
             <Item.Meta title={<Link to={`/post/${item.id}`}>{item.title}</Link>} />
-            {item.body}
+            <PostListContent data={item} />
           </Item>
         )}
       />

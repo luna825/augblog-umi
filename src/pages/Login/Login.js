@@ -43,10 +43,10 @@ class LoginPage extends Component {
 
   render() {
     const { autoLogin } = this.state;
-    const { submitting, login = {} } = this.props;
+    const { submitting, auth = {} } = this.props;
     return (
       <div className={styles.main}>
-        {login.error &&
+        {auth.error &&
           !submitting &&
           this.renderMessage(formatMessage({ id: 'app.login.message-invalid-credentials' }))}
         <Login

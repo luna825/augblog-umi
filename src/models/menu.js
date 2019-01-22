@@ -97,8 +97,8 @@ export default {
 
   effects: {
     *getMenuData({ payload }, { put }) {
-      const { routes, authority } = payload;
-      const menuData = filterMenuData(memoizeOneFormatter(routes, authority));
+      const { routes, currentUser } = payload;
+      const menuData = filterMenuData(memoizeOneFormatter(routes, currentUser));
       const breadcrumbNameMap = memoizeOneGetBreadcrumbNameMap(menuData);
       yield put({
         type: 'save',

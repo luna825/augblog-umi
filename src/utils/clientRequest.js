@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { notification } from 'antd';
 
 const codeMessage = {
   200: '服务器成功返回请求的数据。',
@@ -24,10 +23,6 @@ const checkStatus = response => {
     return response;
   }
   const errortext = codeMessage[response.status] || response.statusText;
-  notification.error({
-    message: `请求错误 ${response.status}: ${response.data.request}`,
-    description: errortext,
-  });
   const error = new Error(errortext);
   error.name = response.status;
   error.response = response;

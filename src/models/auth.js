@@ -1,6 +1,7 @@
 import { routerRedux } from 'dva/router';
 import { getPageQuery } from '@/utils/utils';
 import { login } from '@/services/auth';
+import { reloadAuthorized } from '@/utils/Authorized';
 
 export default {
   namespace: 'auth',
@@ -57,6 +58,7 @@ export default {
       yield put({
         type: 'user/saveCurrentUser',
       });
+      reloadAuthorized('guest');
       localStorage.removeItem('aug-blog-user-token');
     },
   },
