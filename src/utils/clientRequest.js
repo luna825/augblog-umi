@@ -1,4 +1,5 @@
 import axios from 'axios';
+import router from 'umi/router';
 
 const codeMessage = {
   200: '服务器成功返回请求的数据。',
@@ -36,5 +37,13 @@ const instance = axios.create({
 });
 
 export default function request(url, option) {
-  return instance(url, option).then(checkStatus);
+  return instance(url, option)
+    .then(checkStatus)
+    .catch(e => {
+      const status = e.name;
+      if (status >= 404 && status <= 422) {
+        router.push('/exception/404');
+      }
+      throw e;
+    });
 }

@@ -16,8 +16,8 @@ export default memo(({ posts, loading }) => (
         loading={posts.length === 0 ? loading : false}
         dataSource={posts}
         renderItem={item => (
-          <Item key={item.id} extra={<div className={styles.listItemExtra} />}>
-            <Item.Meta title={<Link to={`/post/${item.id}`}>{item.title}</Link>} />
+          <Item key={item.id} extra={item.images ? <div className={styles.listItemExtra} /> : null}>
+            <Item.Meta title={<Link to={`/posts/${item.id}`}>{item.title}</Link>} />
             <PostListContent data={item} />
           </Item>
         )}

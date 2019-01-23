@@ -59,6 +59,10 @@ export default {
           component: './Home/Home',
         },
         {
+          path: '/posts/:id',
+          component: './Blog/Blog',
+        },
+        {
           path: '/welcome',
           name: 'welcome',
           icon: 'smile',

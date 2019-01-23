@@ -5,5 +5,5 @@ export async function fetchPosts() {
 }
 
 export async function fetchPost(id) {
-  return id;
+  return request(`/posts/${id}`);
 }
