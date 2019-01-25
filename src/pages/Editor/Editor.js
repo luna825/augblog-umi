@@ -1,32 +1,8 @@
 import 'braft-editor/dist/index.css';
 import React from 'react';
 import BraftEditor from 'braft-editor';
-import { Form, Input, Button } from 'antd';
+import { Form, Icon } from 'antd';
 import styles from './RichText.less';
-
-const formItemLayout = {
-  labelCol: {
-    xs: { span: 24 },
-    sm: { span: 4 },
-  },
-  wrapperCol: {
-    xs: { span: 24 },
-    sm: { span: 20 },
-  },
-};
-
-const tailFormItemLayout = {
-  wrapperCol: {
-    xs: {
-      span: 24,
-      offset: 0,
-    },
-    sm: {
-      span: 20,
-      offset: 4,
-    },
-  },
-};
 
 const FormItem = Form.Item;
 
@@ -50,41 +26,91 @@ class Editor extends React.Component {
     const { form } = this.props;
     const { getFieldDecorator } = form;
 
-    const excludeControls = [
-      'font-size',
-      'line-height',
-      'letter-spacing',
-      'emoji',
-      'list-ul',
+    const controls = [
+      'undo',
+      'redo',
       'remove-styles',
+      'separator',
+      'headings',
+      'font-size',
+      'separator',
+      'bold',
+      'italic',
+      'underline',
+      'strike-through',
+      'separator',
       'superscript',
       'subscript',
+      'separator',
+      'text-indent',
       'text-align',
+      'separator',
+      'list-ul',
+      'list-ol',
+      'blockquote',
+      'code',
+      'separator',
+      'link',
+      'separator',
+      'hr',
+      'separator',
+      'separator',
     ];
+
+    const extendControls = [
+      'separator',
+      {
+        key: 'update-and-post', // 控件唯一标识，必传
+        type: 'button',
+        title: '更新发布', // 指定鼠标悬停提示文案
+        className: 'post-button', // 指定按钮的样式名
+        html: null, // 指定在按钮中渲染的html字符串
+        text: (
+          <span>
+            <Icon type="sync" />
+            {' 更新发布'}
+          </span>
+        ), // 指定按钮文字，此处可传入jsx，若已指定html，则text不会显示
+        onClick: event => this.handleSubmit(event),
+      },
+    ];
+
+    const renderTitle = () => (
+      <FormItem>
+        {getFieldDecorator('title', {
+          rules: [
+            {
+              required: true,
+              validator: (_, value, callback) => {
+                if (value === '') {
+                  callback(false);
+                } else {
+                  callback();
+                }
+              },
+            },
+          ],
+        })(
+          <div className={styles.editorTitle}>
+            <input placeholder="无标题" />
+          </div>
+        )}
+      </FormItem>
+    );
 
     return (
       <div className={styles.main}>
-        <Form onSubmit={this.handleSubmit}>
-          <FormItem {...formItemLayout} label="文章标题">
-            {getFieldDecorator('title', {
-              rules: [
-                {
-                  required: true,
-                  message: '请输入标题',
-                },
-              ],
-            })(<Input size="large" placeholder="请输入标题" />)}
-          </FormItem>
-          <FormItem {...formItemLayout} label="文章正文">
+        <Form>
+          <FormItem>
             {getFieldDecorator('content', {
               validateTrigger: 'onBlur',
-              initialValue: BraftEditor.createEditorState('<p>Hello <b>ANT DESIGN PRO!</b></p>'),
+              initialValue: BraftEditor.createEditorState(null),
               rules: [
                 {
                   required: true,
                   validator: (_, value, callback) => {
                     if (value.isEmpty()) {
-                      callback('请输入正文内容');
+                      callback(false);
                     } else {
                       callback();
                     }
@@ -93,16 +119,15 @@ class Editor extends React.Component {
               ],
             })(
               <BraftEditor
+                controlBarClassName={styles.editorControl}
                 className={styles.editor}
-                excludeControls={excludeControls}
+                contentClassName={styles.editorContent}
+                controls={controls}
                 placeholder="请输入正文内容"
+                componentBelowControlBar={renderTitle()}
+                extendControls={extendControls}
               />
             )}
-          </FormItem>
-          <FormItem {...tailFormItemLayout}>
-            <Button size="large" type="primary" htmlType="submit">
-              提交
-            </Button>
           </FormItem>
         </Form>
       </div>

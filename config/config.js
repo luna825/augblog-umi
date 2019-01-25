@@ -71,8 +71,6 @@ export default {
         },
         {
           path: '/editor',
-          name: 'editor',
-          icon: 'edit',
           authority: ['Administrator'],
           component: './Editor/Editor',
         },

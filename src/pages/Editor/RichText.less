@@ -1,9 +1,49 @@
 @import '~antd/lib/style/themes/default.less';
 
 .main {
-  background: @component-background;
-  padding: 24px;
-  .editor {
-    border: 1px solid @border-color-split;
+  margin: -24px;
+  :global(.ant-form-item) {
+    margin-bottom: 0;
+  }
+  .editorControl {
+    display: flex;
+    justify-content:center;
+    :global(.headings-dropdown) {
+      min-width: 80px;
+    }
+    :global(.bf-font-size-dropdown) {
+      min-width: 80px;
+    }
+  }
+  .editorContent {
+    max-width: 874px;
+    margin: auto;
+    background: @component-background;
+    height: auto;
+    min-height: 1024px;
+    padding: 18px 45px 90px;
+    border: 1px solid #e8e8e8;
+    border-top:none;
+    box-shadow: 0 2px 8px hsla(0,0%,45.1%,.08);
+  }
+  .editorTitle {
+    max-width: 874px;
+    margin:auto;
+    margin-top:20px;
+    border: 1px solid #e8e8e8;
+    border-bottom: none;
+    padding: 48px 60px 0px;
+    background: @component-background;
+    input {
+      border: none;
+      border-radius: 0;
+      outline-style: none;
+      width: 100%;
+      font-size: 36px;
+      display: block;
+      line-height: 50px;
+      padding-bottom: 32px;
+      border-bottom: 1px solid #e8e8e8;
+    }
   }
 }
