@@ -63,16 +63,16 @@ export default {
           component: './Blog/Blog',
         },
         {
+          path: '/editor',
+          authority: ['Administrator'],
+          component: './Blog/Editor',
+        },
+        {
           path: '/welcome',
           name: 'welcome',
           icon: 'smile',
           authority: ['test'],
           component: './Welcome',
-        },
-        {
-          path: '/editor',
-          authority: ['Administrator'],
-          component: './Editor/Editor',
         },
         {
           component: '404',

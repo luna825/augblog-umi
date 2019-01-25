@@ -1,14 +1,15 @@
-import { fetchPost } from '@/services/api';
+import { fetchPost, createPost } from '@/services/api';
 
 export default {
-  namespace: 'blog',
+  namespace: 'blogView',
 
   state: {
     blog: {},
+    error: null,
   },
 
   effects: {
-    *fetch({ payload }, { put, call }) {
+    *queryBlog({ payload }, { put, call }) {
       try {
         const { data } = yield call(fetchPost, payload);
         yield put({
@@ -20,6 +21,14 @@ export default {
           type: 'save',
           payload: { error: e.response.data, blog: {} },
         });
+      }
+    },
+    *addBlog({ payload }, { put, call }) {
+      try {
+        const { data } = yield call(createPost, payload);
+        console.log(data);
+      } catch (e) {
+        console.log(e);
       }
     },
   },

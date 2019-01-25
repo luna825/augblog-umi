@@ -171,7 +171,7 @@ class BasicLayout extends React.PureComponent {
             {...this.props}
           />
           <Content className={styles.content} style={contentStyle}>
-            <Authorized authority={routerConfig} noMatch={<p>test</p>}>
+            <Authorized authority={routerConfig} noMatch={null}>
               {children}
             </Authorized>
           </Content>

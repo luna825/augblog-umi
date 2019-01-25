@@ -1,23 +1,31 @@
 import 'braft-editor/dist/index.css';
 import React from 'react';
+import { connect } from 'dva';
 import BraftEditor from 'braft-editor';
-import { Form, Icon } from 'antd';
+import { Form, Icon, message } from 'antd';
 import styles from './RichText.less';
 
 const FormItem = Form.Item;
 
+@connect(({ blogView: { blog } }) => ({
+  blog,
+}))
 class Editor extends React.Component {
   handleSubmit = event => {
     event.preventDefault();
-    const { form } = this.props;
+    const { form, dispatch } = this.props;
     form.validateFields((error, values) => {
-      if (!error) {
+      if (error) {
+        message.error(`博客内容或标题不能为空!`);
+      } else {
         const submitData = {
           title: values.title,
-          content: values.content.toRAW(), // or values.content.toHTML()
+          body: values.content.toText(), // or values.content.toHTML()
         };
-        // eslint-disable-next-line no-console
-        console.log(submitData);
+        dispatch({
+          type: 'blogView/addBlog',
+          payload: submitData,
+        });
       }
     });
   };

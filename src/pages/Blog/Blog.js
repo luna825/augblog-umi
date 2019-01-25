@@ -3,25 +3,27 @@ import { connect } from 'dva';
 import { Card, Avatar } from 'antd';
 import moment from 'moment';
 
-@connect(({ blog }) => ({
+@connect(({ blogView: { blog }, loading }) => ({
   blog,
+  loading,
 }))
 class Blog extends PureComponent {
   componentDidMount() {
     const { dispatch, match } = this.props;
     dispatch({
-      type: 'blog/fetch',
+      type: 'blogView/queryBlog',
       payload: match.params.id,
     });
   }
 
   render() {
-    const {
-      blog: { blog },
-    } = this.props;
+    const { blog, loading } = this.props;
     const { title, body, avatar, author, timestamp } = blog;
     return (
-      <Card style={{ maxWidth: '992px', margin: 'auto' }}>
+      <Card
+        style={{ maxWidth: '992px', margin: 'auto' }}
+        loading={loading.effects['blogView/queryBlog']}
+      >
         <h1>{title}</h1>
         <div>
           <Avatar src={avatar} />
