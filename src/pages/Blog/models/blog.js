@@ -1,3 +1,4 @@
+import router from 'umi/router';
 import { fetchPost, createPost } from '@/services/api';
 
 export default {
@@ -17,18 +18,19 @@ export default {
           payload: { blog: data },
         });
       } catch (e) {
-        yield put({
-          type: 'save',
-          payload: { error: e.response.data, blog: {} },
-        });
+        router.push('/exception/404');
       }
     },
     *addBlog({ payload }, { put, call }) {
       try {
         const { data } = yield call(createPost, payload);
-        console.log(data);
+        yield put({
+          type: 'save',
+          payload: { blog: data },
+        });
+        router.push(`/posts/${data.id}`);
       } catch (e) {
-        console.log(e);
+        router.push('/login');
       }
     },
   },

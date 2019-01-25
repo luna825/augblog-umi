@@ -68,6 +68,24 @@ export default {
           component: './Blog/Editor',
         },
         {
+          path: '/exception',
+          routes: [
+            // exception
+            {
+              path: '/exception/403',
+              component: './Exception/403',
+            },
+            {
+              path: '/exception/404',
+              component: './Exception/404',
+            },
+            {
+              path: '/exception/500',
+              component: './Exception/500',
+            },
+          ],
+        },
+        {
           path: '/welcome',
           name: 'welcome',
           icon: 'smile',

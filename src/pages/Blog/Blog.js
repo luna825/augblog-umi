@@ -1,7 +1,8 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'dva';
-import { Card, Avatar } from 'antd';
+import { Card, Avatar, Row, Col } from 'antd';
 import moment from 'moment';
+import styles from './index.less';
 
 @connect(({ blogView: { blog }, loading }) => ({
   blog,
@@ -9,11 +10,13 @@ import moment from 'moment';
 }))
 class Blog extends PureComponent {
   componentDidMount() {
-    const { dispatch, match } = this.props;
-    dispatch({
-      type: 'blogView/queryBlog',
-      payload: match.params.id,
-    });
+    const { dispatch, match, blog } = this.props;
+    if (String(blog.id) !== match.params.id) {
+      dispatch({
+        type: 'blogView/queryBlog',
+        payload: match.params.id,
+      });
+    }
   }
 
   render() {
@@ -21,16 +24,24 @@ class Blog extends PureComponent {
     const { title, body, avatar, author, timestamp } = blog;
     return (
       <Card
-        style={{ maxWidth: '992px', margin: 'auto' }}
+        style={{ maxWidth: '100rem', margin: 'auto' }}
         loading={loading.effects['blogView/queryBlog']}
       >
-        <h1>{title}</h1>
-        <div>
-          <Avatar src={avatar} />
-          <a>{author}</a>
-          <em>{moment(timestamp).format('YYYY-MM-DD HH:mm')}</em>
-        </div>
-        <div>{body}</div>
+        <Row className={styles.blog}>
+          <Col xs={24} md={18}>
+            <div className={styles.header}>
+              <Avatar size="large" src={avatar} />
+              <div className={styles.avatarInfoBox}>
+                <a className={styles.username}>{author}</a>
+                <div className={styles.time}>
+                  {moment(timestamp).format('YYYY年MM月DD日 HH:mm')}
+                </div>
+              </div>
+            </div>
+            <h1>{title}</h1>
+            <p className={styles.content}>{body}</p>
+          </Col>
+        </Row>
       </Card>
     );
   }
