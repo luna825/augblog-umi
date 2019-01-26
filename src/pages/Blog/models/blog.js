@@ -11,15 +11,11 @@ export default {
 
   effects: {
     *queryBlog({ payload }, { put, call }) {
-      try {
-        const { data } = yield call(fetchPost, payload);
-        yield put({
-          type: 'save',
-          payload: { blog: data },
-        });
-      } catch (e) {
-        router.push('/exception/404');
-      }
+      const { data } = yield call(fetchPost, payload);
+      yield put({
+        type: 'save',
+        payload: { blog: data },
+      });
     },
     *addBlog({ payload }, { put, call }) {
       try {

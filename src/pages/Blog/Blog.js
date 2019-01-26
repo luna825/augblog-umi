@@ -1,3 +1,5 @@
+/* eslint-disable react/no-danger */
+import 'github-markdown-css';
 import React, { PureComponent } from 'react';
 import { connect } from 'dva';
 import { Card, Avatar, Row, Col } from 'antd';
@@ -21,7 +23,7 @@ class Blog extends PureComponent {
 
   render() {
     const { blog, loading } = this.props;
-    const { title, body, avatar, author, timestamp } = blog;
+    const { title, body, body_html: bodyHtml, avatar, author, timestamp } = blog;
     return (
       <Card
         style={{ maxWidth: '100rem', margin: 'auto' }}
@@ -39,7 +41,7 @@ class Blog extends PureComponent {
               </div>
             </div>
             <h1>{title}</h1>
-            <p className={styles.content}>{body}</p>
+            <div className="markdown-body" dangerouslySetInnerHTML={{ __html: bodyHtml || body }} />
           </Col>
         </Row>
       </Card>

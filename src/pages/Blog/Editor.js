@@ -2,9 +2,11 @@ import 'braft-editor/dist/index.css';
 import React from 'react';
 import { connect } from 'dva';
 import BraftEditor from 'braft-editor';
+import HeaderId from 'braft-extensions/dist/header-id';
 import { Form, Icon, message } from 'antd';
 import styles from './RichText.less';
 
+BraftEditor.use(HeaderId());
 const FormItem = Form.Item;
 
 @connect(({ blogView: { blog } }) => ({
@@ -21,6 +23,7 @@ class Editor extends React.Component {
         const submitData = {
           title: values.title,
           body: values.content.toText(), // or values.content.toHTML()
+          bodyHtml: values.content.toHTML(),
         };
         dispatch({
           type: 'blogView/addBlog',
