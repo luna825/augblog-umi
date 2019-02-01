@@ -56,7 +56,7 @@ class Editor extends React.Component {
       }
       const submitData = {
         title: values.title,
-        body: values.content.toText(), // or values.content.toHTML()
+        body: values.content.toRAW(), // or values.content.toHTML()
         bodyHtml: values.content.toHTML(),
       };
       onSubmit(submitData)

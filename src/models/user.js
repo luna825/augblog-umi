@@ -1,6 +1,5 @@
 import { fetchCurrentUser } from '@/services/auth';
 import { fetchPostsOfUser, deletePost } from '@/services/api';
-import remove from 'lodash/remove';
 import { reloadAuthorized } from '@/utils/Authorized';
 
 export default {
