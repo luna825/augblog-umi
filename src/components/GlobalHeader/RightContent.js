@@ -71,7 +71,7 @@ export default class GlobalHeaderRight extends PureComponent {
         </Menu.Item>
         <Menu.Item key="userCenter">
           <Icon type="user" />
-          <FormattedMessage id="menu.account.center" defaultMessage="account center" />
+          <FormattedMessage id="menu.center" defaultMessage="account center" />
         </Menu.Item>
         <Menu.Item key="userinfo">
           <Icon type="setting" />
@@ -96,10 +96,10 @@ export default class GlobalHeaderRight extends PureComponent {
               <Avatar
                 size="small"
                 className={styles.avatar}
-                src={currentUser.avatar}
+                src={currentUser.avatarUrl}
                 alt="avatar"
               />
-              <span className={styles.name}>{currentUser.name}</span>
+              <span className={styles.name}>{currentUser.nickname}</span>
             </span>
           </HeaderDropdown>
         ) : (

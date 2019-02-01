@@ -1,6 +1,8 @@
 import React, { PureComponent } from 'react';
 import { Layout } from 'antd';
 import { connect } from 'dva';
+import InfiniteScroll from 'react-infinite-scroller';
+import GridContent from '@/components/PageHeaderWrapper/GridContent';
 import PostList from './PostList';
 import styles from './index.less';
 
@@ -10,26 +12,46 @@ class Home extends PureComponent {
   componentDidMount() {
     const { dispatch } = this.props;
     dispatch({
-      type: 'posts/fetch',
+      type: 'articles/fetch',
+      payload: '/api/v1/posts',
     });
   }
 
+  onLoadMore = next => {
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'articles/fetch',
+      payload: next,
+    });
+  };
+
   render() {
-    const { posts, loading } = this.props;
+    const { articles, loading } = this.props;
     return (
-      <Layout className={styles.container}>
+      <GridContent>
         <Content>
-          <PostList posts={posts.posts} loading={loading} />
+          <InfiniteScroll
+            initialLoad={false}
+            pageStart={0}
+            loadMore={() => this.onLoadMore(articles.links.next)}
+            hasMore={!loading && !!articles.links.next}
+          >
+            <PostList
+              articles={articles}
+              loading={loading}
+              handleInfiniteOnLoad={this.onLoadMore}
+            />
+          </InfiniteScroll>
         </Content>
         <Sider className={styles.sider} breakpoint="lg" collapsedWidth={0} trigger={null}>
           sider
         </Sider>
-      </Layout>
+      </GridContent>
     );
   }
 }
 
-export default connect(({ posts, loading }) => ({
-  posts,
-  loading: loading.models.posts,
+export default connect(({ articles, loading }) => ({
+  articles,
+  loading: loading.models.articles,
 }))(Home);

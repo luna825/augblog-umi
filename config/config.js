@@ -19,7 +19,7 @@ export default {
           baseNavigator: true, // default true, when it is true, will use `navigator.language` overwrite default
         },
         dynamicImport: {
-          loadingComponent: './components/PageLoading/index',
+          loadingComponent: './components/PageLoading/loading',
         },
       },
     ],
@@ -57,6 +57,24 @@ export default {
           name: 'home',
           icon: 'home',
           component: './Home/Home',
+        },
+        {
+          path: '/account/center',
+          name: 'center',
+          component: './Account/Center/Center',
+          authority: ['Administrator', 'User'],
+          icon: 'user',
+          routes: [
+            {
+              path: '/account/center',
+              redirect: '/account/center/articles',
+            },
+            {
+              path: '/account/center/articles',
+              authority: ['Administrator', 'User'],
+              component: './Account/Center/Articles',
+            },
+          ],
         },
         {
           path: '/posts/:id',
@@ -105,7 +123,13 @@ export default {
    */
   define: {
     APP_TYPE: process.env.APP_TYPE || '',
-    HOST: process.env.HOST || 'http://localhost:5000/api/v1'
+  },
+  proxy: {
+    "/api/v1": {
+      "target": "http://localhost:5000/api/v1",
+      "changeOrigin": true,
+      "pathRewrite": { "^/api/v1": "" }
+    }
   },
   // Theme for antd
   // https://ant.design/docs/react/customize-theme-cn

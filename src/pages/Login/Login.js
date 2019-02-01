@@ -55,8 +55,8 @@ class LoginPage extends Component {
             this.loginForm = form;
           }}
         >
-          <UserName name="account" />
-          <Password name="secret" />
+          <UserName name="account" defaultValue="666@666.com" />
+          <Password name="secret" defaultValue="123" />
           <div>
             <Checkbox checked={autoLogin} onChange={this.changeAutoLogin}>
               <FormattedMessage id="app.login.remember-me" />

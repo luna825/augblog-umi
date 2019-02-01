@@ -1,6 +1,6 @@
 import axios from 'axios';
 import router from 'umi/router';
-
+import { Message } from 'antd';
 // const codeMessage = {
 //   200: '服务器成功返回请求的数据。',
 //   201: '新建或修改数据成功。',
@@ -21,16 +21,18 @@ import router from 'umi/router';
 
 const checkStatus = response => {
   if (response.status >= 200 && response.status < 300) {
+    if (response.data.error_code === 1) {
+      Message.success('删除数据成功');
+    }
     return response;
   }
   if (response.status === 404) {
     router.push('/exception/404');
   }
-  return Promise.resolve({ response });
+  return Promise.resolve(response);
 };
 
 // eslint-disable-next-line no-undef
-axios.defaults.baseURL = HOST;
 axios.defaults.validateStatus = status => status >= 200 && status < 600;
 
 axios.interceptors.request.use(

@@ -1,5 +1,5 @@
 import router from 'umi/router';
-import { fetchPost, createPost } from '@/services/api';
+import { fetchPost, createPost, editPost } from '@/services/api';
 
 export default {
   namespace: 'blogView',
@@ -28,6 +28,14 @@ export default {
       } catch (e) {
         router.push('/login');
       }
+    },
+    *editBlog({ payload }, { put, call }) {
+      const { data } = yield call(editPost, payload.submitData, payload.id);
+      yield put({
+        type: 'save',
+        payload: { blog: data },
+      });
+      router.push(`/posts/${data.id}`);
     },
   },
 

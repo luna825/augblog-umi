@@ -1,9 +1,10 @@
 import React from 'react';
-import { Layout } from 'antd';
+import { Layout, BackTop } from 'antd';
 import DocumentTitle from 'react-document-title';
 import isEqual from 'lodash/isEqual';
 import memoizeOne from 'memoize-one';
 import { connect } from 'dva';
+import Redirect from 'umi/redirect';
 import { ContainerQuery } from 'react-container-query';
 import classNames from 'classnames';
 import pathToRegexp from 'path-to-regexp';
@@ -15,6 +16,7 @@ import Footer from './Footer';
 import Header from './Header';
 import Context from './MenuContext';
 import SiderMenu from '@/components/SiderMenu';
+import PageLoading from '@/components/PageLoading/loading';
 
 import styles from './BasicLayout.less';
 
@@ -140,6 +142,7 @@ class BasicLayout extends React.PureComponent {
       breadcrumbNameMap,
       route: { routes },
       fixedHeader,
+      currentUserloading,
     } = this.props;
 
     const isTop = PropsLayout === 'topmenu';
@@ -171,7 +174,7 @@ class BasicLayout extends React.PureComponent {
             {...this.props}
           />
           <Content className={styles.content} style={contentStyle}>
-            <Authorized authority={routerConfig} noMatch={null}>
+            <Authorized authority={routerConfig} noMatch={<Redirect to="/login" />}>
               {children}
             </Authorized>
           </Content>
@@ -181,21 +184,27 @@ class BasicLayout extends React.PureComponent {
     );
     return (
       <React.Fragment>
-        <DocumentTitle title={this.getPageTitle(pathname, breadcrumbNameMap)}>
-          <ContainerQuery query={query}>
-            {params => (
-              <Context.Provider value={this.getContext()}>
-                <div className={classNames(params)}>{layout}</div>
-              </Context.Provider>
-            )}
-          </ContainerQuery>
-        </DocumentTitle>
+        {currentUserloading ? (
+          <PageLoading />
+        ) : (
+          <DocumentTitle title={this.getPageTitle(pathname, breadcrumbNameMap)}>
+            <ContainerQuery query={query}>
+              {params => (
+                <Context.Provider value={this.getContext()}>
+                  <div className={classNames(params)}>{layout}</div>
+                  <BackTop />
+                </Context.Provider>
+              )}
+            </ContainerQuery>
+          </DocumentTitle>
+        )}
       </React.Fragment>
     );
   }
 }
 
-export default connect(({ global, setting, menu }) => ({
+export default connect(({ global, setting, menu, loading }) => ({
+  currentUserloading: loading.effects['user/fetchCurrent'],
   collapsed: global.collapsed,
   layout: setting.layout,
   menuData: menu.menuData,

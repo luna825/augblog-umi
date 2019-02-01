@@ -3,19 +3,61 @@ import React from 'react';
 import { connect } from 'dva';
 import BraftEditor from 'braft-editor';
 import HeaderId from 'braft-extensions/dist/header-id';
-import { Form, Icon, message } from 'antd';
+import { Form, Icon, message, Input } from 'antd';
 import styles from './RichText.less';
 
 BraftEditor.use(HeaderId());
 const FormItem = Form.Item;
 
-@connect(({ blogView: { blog } }) => ({
+const controls = [
+  'undo',
+  'redo',
+  'remove-styles',
+  'separator',
+  'headings',
+  'font-size',
+  'separator',
+  'bold',
+  'italic',
+  'underline',
+  'strike-through',
+  'separator',
+  'superscript',
+  'subscript',
+  'separator',
+  'text-indent',
+  'text-align',
+  'separator',
+  'list-ul',
+  'list-ol',
+  'blockquote',
+  'code',
+  'separator',
+  'link',
+  'separator',
+  'hr',
+  'separator',
+  'separator',
+];
+
+@connect(({ blogView: { blog }, loading }) => ({
   blog,
+  loading: loading.models.blogView,
 }))
 class Editor extends React.Component {
+  componentDidMount() {
+    const { location, dispatch } = this.props;
+    if (location.query.post) {
+      dispatch({
+        type: 'blogView/queryBlog',
+        payload: location.query.post,
+      });
+    }
+  }
+
   handleSubmit = event => {
     event.preventDefault();
-    const { form, dispatch } = this.props;
+    const { form, dispatch, location } = this.props;
     form.validateFields((error, values) => {
       if (error) {
         message.error(`博客内容或标题不能为空!`);
@@ -25,48 +67,47 @@ class Editor extends React.Component {
           body: values.content.toText(), // or values.content.toHTML()
           bodyHtml: values.content.toHTML(),
         };
-        dispatch({
-          type: 'blogView/addBlog',
-          payload: submitData,
-        });
+        if (location.query.post) {
+          dispatch({
+            type: 'blogView/editBlog',
+            payload: { submitData, id: location.query.post },
+          });
+        } else {
+          dispatch({
+            type: 'blogView/addBlog',
+            payload: submitData,
+          });
+        }
       }
     });
   };
 
-  render() {
-    const { form } = this.props;
-    const { getFieldDecorator } = form;
+  renderTitle = (getFieldDecorator, title = '') => (
+    <FormItem className={styles.editorTitle}>
+      {getFieldDecorator('title', {
+        validateTrigger: 'onBlur',
+        initialValue: title,
+        rules: [
+          {
+            required: true,
+            validator: (_, value, callback) => {
+              if (value === '') {
+                callback(false);
+              } else {
+                callback();
+              }
+            },
+          },
+        ],
+      })(<input placeholder="无标题" />)}
+    </FormItem>
+  );
 
-    const controls = [
-      'undo',
-      'redo',
-      'remove-styles',
-      'separator',
-      'headings',
-      'font-size',
-      'separator',
-      'bold',
-      'italic',
-      'underline',
-      'strike-through',
-      'separator',
-      'superscript',
-      'subscript',
-      'separator',
-      'text-indent',
-      'text-align',
-      'separator',
-      'list-ul',
-      'list-ol',
-      'blockquote',
-      'code',
-      'separator',
-      'link',
-      'separator',
-      'hr',
-      'separator',
-      'separator',
-    ];
+  render() {
+    const { form, location, blog, loading } = this.props;
+    const { getFieldDecorator } = form;
+    const content = location.query.post ? blog.body_html : null;
+    const title = location.query.post ? blog.title : '';
 
     const extendControls = [
       'separator',
@@ -86,61 +127,40 @@ class Editor extends React.Component {
       },
     ];
 
-    const renderTitle = () => (
-      <FormItem>
-        {getFieldDecorator('title', {
-          rules: [
-            {
-              required: true,
-              validator: (_, value, callback) => {
-                if (value === '') {
-                  callback(false);
-                } else {
-                  callback();
-                }
-              },
-            },
-          ],
-        })(
-          <div className={styles.editorTitle}>
-            <input placeholder="无标题" />
-          </div>
-        )}
-      </FormItem>
-    );
-
     return (
       <div className={styles.main}>
-        <Form>
-          <FormItem>
-            {getFieldDecorator('content', {
-              validateTrigger: 'onBlur',
-              initialValue: BraftEditor.createEditorState(null),
-              rules: [
-                {
-                  required: true,
-                  validator: (_, value, callback) => {
-                    if (value.isEmpty()) {
-                      callback(false);
-                    } else {
-                      callback();
-                    }
+        {loading ? null : (
+          <Form>
+            <FormItem>
+              {getFieldDecorator('content', {
+                validateTrigger: 'onBlur',
+                initialValue: BraftEditor.createEditorState(content),
+                rules: [
+                  {
+                    required: true,
+                    validator: (_, value, callback) => {
+                      if (value.isEmpty()) {
+                        callback(false);
+                      } else {
+                        callback();
+                      }
+                    },
                   },
-                },
-              ],
-            })(
-              <BraftEditor
-                controlBarClassName={styles.editorControl}
-                className={styles.editor}
-                contentClassName={styles.editorContent}
-                controls={controls}
-                placeholder="请输入正文内容"
-                componentBelowControlBar={renderTitle()}
-                extendControls={extendControls}
-              />
-            )}
-          </FormItem>
-        </Form>
+                ],
+              })(
+                <BraftEditor
+                  controlBarClassName={styles.editorControl}
+                  className={styles.editor}
+                  contentClassName={styles.editorContent}
+                  controls={controls}
+                  placeholder="请输入正文内容"
+                  componentBelowControlBar={this.renderTitle(getFieldDecorator, title)}
+                  extendControls={extendControls}
+                />
+              )}
+            </FormItem>
+          </Form>
+        )}
       </div>
     );
   }

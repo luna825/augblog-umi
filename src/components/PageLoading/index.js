@@ -1,6 +1,7 @@
 import React from 'react';
-import { Spin } from 'antd';
+import { Spin, Icon } from 'antd';
 
+Spin.setDefaultIndicator(<Icon type="loading" style={{ fontSize: 24 }} spin />);
 // loading components from code split
 // https://umijs.org/plugin/umi-plugin-react.html#dynamicimport
 export default () => (

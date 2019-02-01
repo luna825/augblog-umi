@@ -60,6 +60,11 @@ export default {
       });
       reloadAuthorized('guest');
       localStorage.removeItem('aug-blog-user-token');
+      yield put(
+        routerRedux.push({
+          pathname: '/home',
+        })
+      );
     },
   },
 

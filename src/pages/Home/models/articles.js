@@ -1,24 +1,28 @@
-import { fetchPosts } from '@/services/api';
+import { fetch } from '@/services/api';
 
 export default {
-  namespace: 'posts',
+  namespace: 'articles',
 
   state: {
-    posts: [],
+    links: {
+      next: null,
+    },
+    items: [],
   },
 
   effects: {
-    *fetch(_, { put, call }) {
+    *fetch({ payload }, { put, call }) {
       try {
-        const { data } = yield call(fetchPosts);
+        const { data } = yield call(fetch, payload);
         yield put({
           type: 'save',
           payload: data,
         });
       } catch (e) {
+        // 出现错误，传递空数据
         yield put({
           type: 'save',
-          payload: { post: [], error: e.data },
+          payload: {},
         });
       }
     },
@@ -29,6 +33,7 @@ export default {
       return {
         ...state,
         ...payload,
+        items: state.items.concat(payload.items),
       };
     },
   },
