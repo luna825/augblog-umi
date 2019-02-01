@@ -1,7 +1,6 @@
 import React, { PureComponent } from 'react';
 import { Layout } from 'antd';
 import { connect } from 'dva';
-import InfiniteScroll from 'react-infinite-scroller';
 import GridContent from '@/components/PageHeaderWrapper/GridContent';
 import PostList from './PostList';
 import styles from './index.less';
@@ -13,7 +12,7 @@ class Home extends PureComponent {
     const { dispatch } = this.props;
     dispatch({
       type: 'articles/fetch',
-      payload: '/api/v1/posts',
+      url: '/api/v1/posts',
     });
   }
 
@@ -21,7 +20,8 @@ class Home extends PureComponent {
     const { dispatch } = this.props;
     dispatch({
       type: 'articles/fetch',
-      payload: next,
+      url: next,
+      add: true,
     });
   };
 
@@ -30,18 +30,7 @@ class Home extends PureComponent {
     return (
       <GridContent>
         <Content>
-          <InfiniteScroll
-            initialLoad={false}
-            pageStart={0}
-            loadMore={() => this.onLoadMore(articles.links.next)}
-            hasMore={!loading && !!articles.links.next}
-          >
-            <PostList
-              articles={articles}
-              loading={loading}
-              handleInfiniteOnLoad={this.onLoadMore}
-            />
-          </InfiniteScroll>
+          <PostList articles={articles} loading={loading} handleInfiniteOnLoad={this.onLoadMore} />
         </Content>
         <Sider className={styles.sider} breakpoint="lg" collapsedWidth={0} trigger={null}>
           sider

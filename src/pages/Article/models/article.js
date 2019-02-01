@@ -1,20 +1,18 @@
 import router from 'umi/router';
-import { fetchPost, createPost, editPost } from '@/services/api';
+import { fetch, createPost, editPost } from '@/services/api';
 
 export default {
-  namespace: 'blogView',
+  namespace: 'article',
 
   state: {
-    blog: {},
-    error: null,
   },
 
   effects: {
-    *queryBlog({ payload }, { put, call }) {
-      const { data } = yield call(fetchPost, payload);
+    *fetch({ payload }, { put, call }) {
+      const { data } = yield call(fetch, payload);
       yield put({
         type: 'save',
-        payload: { blog: data },
+        payload: data,
       });
     },
     *addBlog({ payload }, { put, call }) {

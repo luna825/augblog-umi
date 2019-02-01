@@ -11,29 +11,31 @@ export default {
   },
 
   effects: {
-    *fetch({ payload }, { put, call }) {
+    *fetch({ url, add }, { put, call }) {
       try {
-        const { data } = yield call(fetch, payload);
+        const { data } = yield call(fetch, url);
         yield put({
           type: 'save',
           payload: data,
+          add,
         });
       } catch (e) {
         // 出现错误，传递空数据
         yield put({
           type: 'save',
           payload: {},
+          add: true
         });
       }
     },
   },
 
   reducers: {
-    save(state, { payload }) {
+    save(state, { payload, add }) {
       return {
         ...state,
         ...payload,
-        items: state.items.concat(payload.items),
+        items:add ? state.items.concat(payload.items) : payload.items ,
       };
     },
   },
