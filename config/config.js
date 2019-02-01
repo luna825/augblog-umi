@@ -19,7 +19,7 @@ export default {
           baseNavigator: true, // default true, when it is true, will use `navigator.language` overwrite default
         },
         dynamicImport: {
-          loadingComponent: './components/PageLoading',
+          loadingComponent: './components/PageLoading/index',
         },
       },
     ],
@@ -78,12 +78,22 @@ export default {
         },
         {
           path: '/posts/:id',
-          component: './Article/Article',
+          component: './Article/ArticleWrapper',
+          routes: [
+            {
+              path:'/posts/:id',
+              component: './Article/Article'
+            },
+            {
+              path: '/posts/:id/edit',
+              component: './Article/Edit'
+            }
+          ]
         },
         {
           path: '/editor',
           authority: ['Administrator'],
-          component: './Article/Editor',
+          component: './Editor/Editor',
         },
         {
           path: '/exception',

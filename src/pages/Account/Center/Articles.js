@@ -6,26 +6,37 @@ import { connect } from 'dva';
 import ArticleListContent from '@/components/ArticleListContent';
 import styles from './Articles.less';
 
-@connect(({ user, loading }) => ({
-  postsInfo: user.postsInfo,
-  loading: loading.models.user,
+@connect(({ user, loading, account }) => ({
+  currentUser: user.currentUser,
+  articles: account.articles,
+  loading: loading.models.account
 }))
 class Center extends PureComponent {
-  handleDeleted = id => {
+
+  componentDidMount() {
+    const { dispatch, currentUser } = this.props;
+    dispatch({
+      type: 'account/fetchArticles',
+      url: `/api/v1/users/${currentUser.id}/posts`
+    })
+  }
+
+  handleDeleted = item => {
     const { dispatch } = this.props;
     dispatch({
-      type: 'user/deleteCurrentuserPost',
-      payload: id,
+      type: 'account/removeArticle',
+      url: item.links.self,
+      id: item.id,
     });
   };
 
   handleEdit = id => {
-    router.push(`/editor?post=${id}`);
+    router.push(`/posts/${id}/edit`);
   };
 
   render() {
     const {
-      postsInfo: { posts },
+      articles,
       loading,
     } = this.props;
     const IconText = ({ type, text, onHandleAction }) => (
@@ -41,7 +52,7 @@ class Center extends PureComponent {
         loading={loading}
         rowKey="id"
         itemLayout="vertical"
-        dataSource={posts}
+        dataSource={articles.items}
         renderItem={item => (
           <List.Item
             key={item.id}
@@ -50,7 +61,7 @@ class Center extends PureComponent {
               <IconText
                 type="delete"
                 text="删除"
-                onHandleAction={() => this.handleDeleted(item.id)}
+                onHandleAction={() => this.handleDeleted(item)}
               />,
             ]}
           >

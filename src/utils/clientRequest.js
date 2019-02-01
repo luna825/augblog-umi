@@ -22,7 +22,7 @@ import { Message } from 'antd';
 const checkStatus = response => {
   if (response.status >= 200 && response.status < 300) {
     if (response.data.error_code === 1) {
-      Message.success('删除数据成功');
+      Message.success('删除成功');
     }
     return response;
   }

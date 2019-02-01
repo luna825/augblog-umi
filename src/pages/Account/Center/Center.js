@@ -4,47 +4,26 @@ import { Card, Row, Col, Icon, Divider } from 'antd';
 import GridContent from '@/components/PageHeaderWrapper/GridContent';
 import styles from './Center.less';
 
-@connect(({ user, loading }) => ({
-  currentUserLoading: loading.effects['user/fetchCurrent'],
+@connect(({ user }) => ({
   currentUser: user.currentUser,
-  postsInfo: user.postsInfo,
 }))
 class Center extends PureComponent {
-  componentDidMount() {
-    const { dispatch, currentUser } = this.props;
-    if (currentUser && Object.keys(currentUser).length) {
-      dispatch({
-        type: 'user/fetchCurrentuserPosts',
-        payload: currentUser.id,
-      });
-    }
-  }
-
-  componentDidUpdate(preprops) {
-    const { dispatch, currentUser } = this.props;
-    if (currentUser.id !== preprops.currentUser.id) {
-      dispatch({
-        type: 'user/fetchCurrentuserPosts',
-        payload: currentUser.id,
-      });
-    }
-  }
 
   render() {
-    const { currentUser, currentUserLoading, children } = this.props;
+    const { currentUser, children } = this.props;
     return (
       <GridContent>
         <Row gutter={24}>
           <Col lg={7} md={24}>
-            <Card bordered={false} style={{ marginBottom: 24 }} loading={currentUserLoading}>
+            <Card bordered={false} style={{ marginBottom: 24 }}>
               {currentUser && Object.keys(currentUser).length ? (
                 <div>
                   <div className={styles.avatarHolder}>
-                    <img alt="" src={currentUser.avatar} />
+                    <img alt="" src={currentUser.avatarUrl} />
                     <div className={styles.name}>{currentUser.nickname}</div>
                   </div>
                   <div className={styles.detail}>
-                    {currentUser.about_me && (
+                    {currentUser.aboutMe && (
                       <p>
                         <i className={styles.title} />
                         {currentUser.about_me}
@@ -59,9 +38,7 @@ class Center extends PureComponent {
                   </div>
                   <Divider dashed />
                   <div className={styles.link}>
-                    <a href="https://github.com/luna825" target="_blank">
-                      <Icon type="github" /> Github
-                    </a>
+                    <div> <Icon type='mail' /> {currentUser.email}</div>
                   </div>
                 </div>
               ) : (

@@ -4,6 +4,26 @@ export async function fetch(url) {
   return request(url);
 }
 
+export async function add(url, data) {
+  return request(url, {
+    method: 'POST',
+    data,
+  })
+}
+
+export async function update(url, data){
+  return request(url, {
+    method: 'PUT',
+    data,
+  })
+}
+
+export async function remove(url) {
+  return request(url, {
+    method: 'DELETE'
+  })
+}
+
 export async function fetchPost(id) {
   return request(`/api/v1/posts/${id}`);
 }

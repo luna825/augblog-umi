@@ -23,7 +23,7 @@ export default {
         // 出现错误，传递空数据
         yield put({
           type: 'save',
-          payload: {},
+          payload: { items: []},
           add: true
         });
       }

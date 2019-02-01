@@ -8,7 +8,6 @@ export default {
 
   state: {
     currentUser: {},
-    postsInfo: { posts: [] },
   },
 
   effects: {
@@ -54,26 +53,6 @@ export default {
       return {
         ...state,
         currentUser: action.payload || {},
-      };
-    },
-    savaCurrentUserPosts(state, action) {
-      return {
-        ...state,
-        postsInfo: action.payload,
-      };
-    },
-    removeCurrentUserPost(state, action) {
-      const { postsInfo } = state;
-      const { posts } = postsInfo;
-      remove(posts, post => post.id === action.payload);
-
-      return {
-        ...state,
-        postsInfo: {
-          ...postsInfo,
-          posts,
-          count: postsInfo.count - 1,
-        },
       };
     },
   },
