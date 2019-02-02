@@ -23,8 +23,8 @@ export default {
         // 出现错误，传递空数据
         yield put({
           type: 'save',
-          payload: { items: []},
-          add: true
+          payload: { items: [] },
+          add: true,
         });
       }
     },
@@ -35,7 +35,7 @@ export default {
       return {
         ...state,
         ...payload,
-        items:add ? state.items.concat(payload.items) : payload.items ,
+        items: add ? state.items.concat(payload.items) : payload.items,
       };
     },
   },

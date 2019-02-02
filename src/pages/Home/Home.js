@@ -32,7 +32,13 @@ class Home extends PureComponent {
         <Content>
           <PostList articles={articles} loading={loading} handleInfiniteOnLoad={this.onLoadMore} />
         </Content>
-        <Sider width={300} className={styles.sider} breakpoint="lg" collapsedWidth={0} trigger={null}>
+        <Sider
+          width={300}
+          className={styles.sider}
+          breakpoint="lg"
+          collapsedWidth={0}
+          trigger={null}
+        >
           <Card bordered={false}>
             <div className={styles.avatarHolder}>
               <img alt="" src="https://avatars0.githubusercontent.com/u/10859713?s=460&v=4" />
@@ -45,8 +51,17 @@ class Home extends PureComponent {
             </div>
             <Divider dashed />
             <div className={styles.link}>
-              <div> <Icon type='mail' /> luna825@qq.com </div>
-              <div> <Icon type='github' /> <a rel="noopener noreferrer" target="_blank" href="https://github.com/luna825">Github </a></div>
+              <div>
+                {' '}
+                <Icon type="mail" /> luna825@qq.com{' '}
+              </div>
+              <div>
+                {' '}
+                <Icon type="github" />{' '}
+                <a rel="noopener noreferrer" target="_blank" href="https://github.com/luna825">
+                  Github{' '}
+                </a>
+              </div>
             </div>
           </Card>
         </Sider>

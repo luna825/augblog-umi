@@ -15,7 +15,7 @@ class ArticleWrapper extends PureComponent {
 
   render() {
     const { children } = this.props;
-    return <>{children}</>
+    return <>{children}</>;
   }
 }
 

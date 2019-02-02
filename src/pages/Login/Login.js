@@ -47,6 +47,7 @@ class LoginPage extends Component {
     return (
       <div className={styles.main}>
         {auth.error &&
+          !auth.isLogin &&
           !submitting &&
           this.renderMessage(formatMessage({ id: 'app.login.message-invalid-credentials' }))}
         <Login
@@ -55,8 +56,8 @@ class LoginPage extends Component {
             this.loginForm = form;
           }}
         >
-          <UserName name="account" defaultValue="luna825@qq.com" />
-          <Password name="secret" defaultValue="123" />
+          <UserName name="account" />
+          <Password name="secret" />
           <div>
             <Checkbox checked={autoLogin} onChange={this.changeAutoLogin}>
               <FormattedMessage id="app.login.remember-me" />

@@ -9,16 +9,15 @@ import styles from './Articles.less';
 @connect(({ user, loading, account }) => ({
   currentUser: user.currentUser,
   articles: account.articles,
-  loading: loading.models.account
+  loading: loading.models.account,
 }))
 class Center extends PureComponent {
-
   componentDidMount() {
     const { dispatch, currentUser } = this.props;
     dispatch({
       type: 'account/fetchArticles',
-      url: `/api/v1/users/${currentUser.id}/posts`
-    })
+      url: `/api/v1/users/${currentUser.id}/posts`,
+    });
   }
 
   handleDeleted = item => {
@@ -35,10 +34,7 @@ class Center extends PureComponent {
   };
 
   render() {
-    const {
-      articles,
-      loading,
-    } = this.props;
+    const { articles, loading } = this.props;
     const IconText = ({ type, text, onHandleAction }) => (
       <span onClick={onHandleAction}>
         <Icon type={type} style={{ marginRight: 8 }} />

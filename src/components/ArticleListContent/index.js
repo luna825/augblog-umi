@@ -3,15 +3,15 @@ import moment from 'moment';
 import { Avatar } from 'antd';
 import styles from './index.less';
 
-const formatBody = (body) => {
+const formatBody = body => {
   try {
-    const bodyObj = JSON.parse(body)
-    const text = bodyObj.blocks.map(block => block.text).join(' ')
+    const bodyObj = JSON.parse(body);
+    const text = bodyObj.blocks.map(block => block.text).join(' ');
     return text;
-  } catch(e){
-    return body
+  } catch (e) {
+    return body;
   }
-}
+};
 
 const ArticleListContent = ({ data: { body, timestamp, author } }) => (
   <div className={styles.listContent}>

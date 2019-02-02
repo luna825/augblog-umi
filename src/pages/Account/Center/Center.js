@@ -8,7 +8,6 @@ import styles from './Center.less';
   currentUser: user.currentUser,
 }))
 class Center extends PureComponent {
-
   render() {
     const { currentUser, children } = this.props;
     return (
@@ -38,7 +37,10 @@ class Center extends PureComponent {
                   </div>
                   <Divider dashed />
                   <div className={styles.link}>
-                    <div> <Icon type='mail' /> {currentUser.email}</div>
+                    <div>
+                      {' '}
+                      <Icon type="mail" /> {currentUser.email}
+                    </div>
                   </div>
                 </div>
               ) : (

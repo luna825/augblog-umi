@@ -3,8 +3,7 @@ import { fetch } from '@/services/api';
 export default {
   namespace: 'article',
 
-  state: {
-  },
+  state: {},
 
   effects: {
     *fetch({ payload }, { put, call }) {

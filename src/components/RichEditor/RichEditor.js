@@ -40,13 +40,12 @@ const controls = [
 ];
 
 class Editor extends React.Component {
-
   static defaultProps = {
     article: {},
-    onSubmit: () => {}
-  }
+    onSubmit: () => {},
+  };
 
-  handleSubmit = async (event) => {
+  handleSubmit = async event => {
     event.preventDefault();
     const { form, onSubmit } = this.props;
     form.validateFields((error, values) => {
@@ -59,7 +58,7 @@ class Editor extends React.Component {
         body: values.content.toRAW(), // or values.content.toHTML()
         bodyHtml: values.content.toHTML(),
       };
-      onSubmit(submitData)
+      onSubmit(submitData);
     });
   };
 

@@ -8,20 +8,20 @@ export async function add(url, data) {
   return request(url, {
     method: 'POST',
     data,
-  })
+  });
 }
 
-export async function update(url, data){
+export async function update(url, data) {
   return request(url, {
     method: 'PUT',
     data,
-  })
+  });
 }
 
 export async function remove(url) {
   return request(url, {
-    method: 'DELETE'
-  })
+    method: 'DELETE',
+  });
 }
 
 export async function fetchPost(id) {

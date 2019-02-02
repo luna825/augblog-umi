@@ -1,4 +1,3 @@
-
 export default {
   namespace: 'global',
 
@@ -6,9 +5,7 @@ export default {
     collapsed: false,
   },
 
-  effects: {
-
-  },
+  effects: {},
 
   reducers: {
     changeLayoutCollapsed(state, { payload }) {

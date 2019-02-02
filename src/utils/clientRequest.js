@@ -19,25 +19,13 @@ import { Message } from 'antd';
 //   504: '网关超时。',
 // };
 
-const checkStatus = response => {
-  if (response.status >= 200 && response.status < 300) {
-    if (response.data.error_code === 1) {
-      Message.success('删除成功');
-    }
-    return response;
-  }
-  if (response.status === 404) {
-    router.push('/exception/404');
-  }
-  return Promise.resolve(response);
-};
-
-// eslint-disable-next-line no-undef
-axios.defaults.validateStatus = status => status >= 200 && status < 600;
+axios.defaults.timeout = 3000;
+axios.defaults.withCredentials = true;
 
 axios.interceptors.request.use(
   config => {
     const newConfig = { ...config };
+    // 从本地存储中取得 jwt 的验证 token
     const token = localStorage.getItem('aug-blog-user-token');
     if (token) {
       newConfig.headers.Authorization = `Bearer ${token}`;
@@ -47,6 +35,47 @@ axios.interceptors.request.use(
   err => Promise.reject(err)
 );
 
-axios.interceptors.response.use(checkStatus, error => Promise.reject(error));
+axios.interceptors.response.use(
+  response => {
+    const { data, status } = response;
+    if (status >= 200 && status < 300) {
+      if (data.error_code === 1) {
+        Message.success('数据删除成功');
+      }
+      return response;
+    }
+    return Promise.reject(response);
+  },
+  error => Promise.reject(error)
+);
 
-export default axios;
+export default function request(url, opt) {
+  return axios(url, opt).catch(error => {
+    // 请求配置发生的错误
+    if (!error.response) {
+      // eslint-disable-next-line no-console
+      return console.log('Error', error.message);
+    }
+
+    // 响应时的状态码处理
+    const { status } = error.response;
+    if (status === 401) {
+      // @HACK
+      /* eslint-disable no-underscore-dangle */
+      window.g_app._store.dispatch({
+        type: 'login/logout',
+      });
+    }
+    // environment should not be used
+    if (status === 403) {
+      router.push('/exception/403');
+    }
+    if (status <= 504 && status >= 500) {
+      router.push('/exception/500');
+    }
+    if (status >= 404 && status < 422) {
+      router.push('/exception/404');
+    }
+    return Promise.reject(error.response);
+  });
+}

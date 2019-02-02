@@ -1,5 +1,4 @@
 import { fetchCurrentUser } from '@/services/auth';
-import { fetchPostsOfUser, deletePost } from '@/services/api';
 import { reloadAuthorized } from '@/utils/Authorized';
 
 export default {
@@ -10,7 +9,7 @@ export default {
   },
 
   effects: {
-    *fetchCurrent({ payload }, { call, put }) {
+    *fetchCurrent(_, { call, put }) {
       if (!localStorage.getItem('aug-blog-user-token')) {
         yield put({
           type: 'savaCurrentUser',
@@ -18,7 +17,7 @@ export default {
         return;
       }
       try {
-        const { data } = yield call(fetchCurrentUser, payload);
+        const { data } = yield call(fetchCurrentUser);
         reloadAuthorized(data.role);
         yield put({
           type: 'saveCurrentUser',
@@ -30,20 +29,6 @@ export default {
           type: 'savaCurrentUser',
         });
       }
-    },
-    *fetchCurrentuserPosts({ payload }, { call, put }) {
-      const { data } = yield call(fetchPostsOfUser, payload);
-      yield put({
-        type: 'savaCurrentUserPosts',
-        payload: data,
-      });
-    },
-    *deleteCurrentuserPost({ payload }, { call, put }) {
-      yield call(deletePost, payload);
-      yield put({
-        type: 'removeCurrentUserPost',
-        payload,
-      });
     },
   },
 

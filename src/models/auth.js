@@ -17,7 +17,6 @@ export default {
         yield localStorage.setItem('aug-blog-user-token', response.data.token);
         yield put({
           type: 'user/fetchCurrent',
-          payload: response.data.token,
         });
         yield put({
           type: 'changeLoginStatus',
@@ -45,7 +44,7 @@ export default {
         yield put({
           type: 'changeLoginStatus',
           isLogin: false,
-          error: e.response.data,
+          error: e.data,
         });
       }
     },
