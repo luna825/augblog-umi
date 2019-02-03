@@ -27,7 +27,7 @@ class Article extends PureComponent {
                       </div>
                     </div>
                   </div>
-                  <h1>{article.title}</h1>
+                  <h1 className={styles.title}>{article.title}</h1>
                   <div
                     className="markdown-body"
                     dangerouslySetInnerHTML={{ __html: article.bodyHtml }}

@@ -7,11 +7,18 @@ export default {
 
   effects: {
     *fetch({ payload }, { put, call }) {
-      const { data } = yield call(fetch, payload);
-      yield put({
-        type: 'save',
-        payload: data,
-      });
+      try{
+        const { data } = yield call(fetch, payload);
+        yield put({
+          type: 'save',
+          payload: data,
+        });
+      }catch (e) {
+        yield put({
+          type: 'save',
+          payload: {}
+        })
+      }
     },
   },
 

@@ -18,10 +18,66 @@
       }
     }
   }
-  h1 {
-    margin: .67em 0;
-    font-size: 2.5rem;
-    font-weight: 700;
+  .title {
+      margin: .8em 0;
+      font-size: 3rem;
+      font-weight: 700;
+      line-height: 1.5;
+    }
+
+  :global(.markdown-body){
+    font-family: Chinese Quote,-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,PingFang SC,Hiragino Sans GB,Microsoft YaHei,Helvetica Neue,Helvetica,Arial,sans-serif;
+    font-size: 14px;
+    font-variant: tabular-nums;
     line-height: 1.5;
+    color: #595959;
+    h1,h2,h3,h4,h5,h6 {
+      margin-top: 0;
+      margin-bottom: 0;
+      white-space: normal;
+      color: #262626;
+      word-spacing: 1px;
+      font-weight: 700;
+      padding: 7px 0;
+      border-bottom: none;
+    }
+    h1 {
+      font-size: 28px;
+      line-height: 36px;
+    }
+    h2 {
+      font-size: 24px;
+      line-height: 32px;
+    }
+    h3 {
+      font-size: 20px;
+      line-height: 28px;
+    }
+    h4 {
+      font-size: 16px;
+      line-height: 24px;
+    }
+    hr {
+      height: 0.12em;
+      margin: 18px 0;
+    }
+    ul {
+      list-style: disc;
+    }
+    ol {
+      list-style: decimal;
+    }
+    pre {
+      background-color: #f9f9f9;
+      border: 1px solid #e8e8e8;
+      border-radius: 2px 2px;
+      code {
+        font-family: SFMono-Regular,Consolas,Liberation Mono,Menlo,Courier,monospace;
+        font-size: 13px;
+        line-height: 21px;
+        color: #595959;
+        direction: ltr;
+      }
+    }
   }
 }
